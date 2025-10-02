@@ -18,7 +18,7 @@ from flask_sqlalchemy import SQLAlchemy
 from functools import wraps
 
 basedir = Path(__file__).resolve().parent
-
+db = SQLAlchemy()
 # configuration
 DATABASE = "flaskr.db"
 USERNAME = "admin"
@@ -39,10 +39,12 @@ app = Flask(__name__)
 # load the config
 app.config.from_object(__name__)
 # init sqlalchemy
-db = SQLAlchemy(app)
+db.init_app(app)
 
 from project import models
 
+with app.app_context():
+    db.create_all()
 
 @app.route("/")
 def index():
