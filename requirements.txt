@@ -1,3 +1,4 @@
-flask
-pytest
+Flask
+Flask-SQLAlchemy
 gunicorn
+pytest
