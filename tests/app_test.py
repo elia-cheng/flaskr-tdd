@@ -78,6 +78,22 @@ def test_messages(client):
 
 def test_delete_message(client):
     """Ensure the messages are being deleted"""
-    rv = client.get('/delete/1')
+    rv = client.get("/delete/1")
+    data = json.loads(rv.data)
+    assert data["status"] == 0
+    login(client, app.config["USERNAME"], app.config["PASSWORD"])
+    rv = client.get("/delete/1")
+    data = json.loads(rv.data)
+    assert data["status"] == 1
+    
+def search(client):
+    """Search"""
+    rv = client.get('/search/')
+    assert b"Found" in rv.data
+    assert b"Not found" not in rv.data
+
+def login_required(client):
+    """Check if user is logged in"""
+    rv = client.get('/')
     data = json.loads(rv.data)
     assert data["status"] == 1
